@@ -1,0 +1,43 @@
+name: 🐛 Bug Report
+description: Create a Bug Report
+title: "🐛 [Bug Report]: "
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Hello, thanks for taking the time to fill out this bug report!
+
+        Before you begin, **please ensure there is no existing open or closed issue related to your report**.
+
+        ---
+
+  - type: input
+    id: module-version
+    attributes:
+      label: Module Version
+      description: e.g. 1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the issue in detail.
+    validations:
+      required: true
+  
+  - type: textarea
+    id: issue-reproduce
+    attributes:
+      label: How can the issue be reproduced?
+      description: Describe steps to reproduce the behavior.
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-screenshots
+    attributes:
+      label: Screenshots
+      description: Provide screenshots here or share links.
