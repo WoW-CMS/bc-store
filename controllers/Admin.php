@@ -544,7 +544,6 @@ class Admin extends Admin_Controller
             if ($inputs['type'] === 'item') {
                 $this->form_validation->set_rules('item', lang('item'), 'trim|required|is_natural_no_zero');
                 $this->form_validation->set_rules('quantity', lang('quantity'), 'trim|required|is_natural_no_zero');
-                $this->form_validation->set_rules('stackable', lang('stackable'), 'trim|required|is_natural_no_zero');
             } else {
                 $this->form_validation->set_rules('command', lang('command'), 'trim|required|callback__valid_custom_command');
             }
@@ -601,7 +600,6 @@ class Admin extends Admin_Controller
             if ($inputs['type'] === 'item') {
                 $this->form_validation->set_rules('item', lang('item'), 'trim|required|is_natural_no_zero');
                 $this->form_validation->set_rules('quantity', lang('quantity'), 'trim|required|is_natural_no_zero');
-                $this->form_validation->set_rules('stackable', lang('stackable'), 'trim|required|is_natural_no_zero');
             } else {
                 $this->form_validation->set_rules('command', lang('command'), 'trim|required|callback__valid_custom_command');
             }

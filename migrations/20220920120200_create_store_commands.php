@@ -33,11 +33,6 @@ class Migration_Create_store_commands extends CI_Migration {
                 'type' => 'INT',
                 'constraint' => 10,
                 'unsigned' => TRUE
-            ],
-            'stackable' => [
-                'type' => 'INT',
-                'constraint' => 10,
-                'unsigned' => TRUE
             ]
         ]);
         $this->dbforge->add_key('id', true);
