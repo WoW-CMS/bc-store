@@ -308,9 +308,7 @@ class Admin extends Admin_Controller
 
         $this->template->title(lang('admin_panel'), config_item('app_name'));
 
-        $this->template->body_tags([
-            ['script', ['src' => base_url('assets/js/media-preview.js')]]
-        ]);
+        $this->template->add_js(base_url('assets/js/media-preview.js'));
 
         $this->form_validation->set_rules('name', lang('name'), 'trim|required|callback__valid_product_name');
         $this->form_validation->set_rules('category', lang('category'), 'trim|required|is_natural_no_zero');
@@ -392,9 +390,7 @@ class Admin extends Admin_Controller
 
         $this->template->title(lang('admin_panel'), config_item('app_name'));
 
-        $this->template->body_tags([
-            ['script', ['src' => base_url('assets/js/media-preview.js')]]
-        ]);
+        $this->template->add_js(base_url('assets/js/media-preview.js'));
 
         $this->form_validation->set_rules('name', lang('name'), 'trim|required|callback__valid_product_name');
         $this->form_validation->set_rules('category', lang('category'), 'trim|required|is_natural_no_zero');
