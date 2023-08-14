@@ -50,6 +50,7 @@ $lang['edit_command'] = 'Edit command';
 */
 $lang['form_validation_valid_product_name'] = "The {field} field may only contain alpha-numeric characters, spaces and the characters ' - _ . : [ ]";
 $lang['form_validation_valid_custom_command'] = 'The {field} field may only contain alpha-numeric characters, spaces and the characters . : {}';
+$lang['form_validation_valid_mail_body'] = 'The {field} field may only contain alpha-numeric characters, spaces and the characters ! . : {} - _';
 
 /**
  * Alerts

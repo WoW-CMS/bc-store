@@ -47,7 +47,7 @@ class Admin extends Admin_Controller
 
         $this->form_validation->set_rules('products_per_page', lang('products_per_page'), 'trim|required|is_natural_no_zero');
         $this->form_validation->set_rules('mail_subject', lang('mail_subject'), 'trim|required|alpha_numeric_spaces|max_length[100]');
-        $this->form_validation->set_rules('mail_body', lang('mail_body'), 'trim|required|alpha_numeric_spaces|max_length[250]');
+        $this->form_validation->set_rules('mail_body', lang('mail_body'), 'trim|required|max_length[250]|callback__valid_mail_body');
 
         if ($this->input->method() === 'post' && $this->form_validation->run()) {
             $this->setting_model->update_batch([
@@ -735,6 +735,21 @@ class Admin extends Admin_Controller
         }
 
         $this->form_validation->set_message('_valid_custom_command', lang('form_validation_valid_custom_command'));
+        return false;
+    }
+
+    /**
+     * Callback to check if the mail body is valid
+     * 
+     * @param string $str
+     * @return bool
+     */
+    public function _valid_mail_body($str)
+    {
+        if (preg_match('/^[^"$]*$/', $str) === 1) {
+            return true;
+        }
+        $this->form_validation->set_message('_valid_mail_body', lang('form_validation_valid_mail_body'));
         return false;
     }
 }
