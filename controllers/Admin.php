@@ -137,7 +137,7 @@ class Admin extends Admin_Controller
     }
 
     /**
-     * Edit store category
+     * Edit category
      *
      * @param int $categoryId
      * @return string|void
@@ -247,7 +247,7 @@ class Admin extends Admin_Controller
     }
 
     /**
-     * Delete store category
+     * Delete category
      *
      * @param int $categoryId
      * @return void
@@ -714,7 +714,7 @@ class Admin extends Admin_Controller
      */
     public function _valid_product_name($str)
     {
-        if (preg_match('/^[\w \'\-\.:\[\]]+$/iu', $str) === 1) {
+        if (preg_match('/^[\w \'.\-:\[\]]+$/iu', $str) === 1) {
             return true;
         }
 
@@ -730,7 +730,7 @@ class Admin extends Admin_Controller
      */
     public function _valid_custom_command($str)
     {
-        if (preg_match('/^[a-z0-9 :.\{\}]+$/', $str) === 1) {
+        if (preg_match('/^[a-z0-9 .:\{\}]+$/', $str) === 1) {
             return true;
         }
 
@@ -746,10 +746,11 @@ class Admin extends Admin_Controller
      */
     public function _valid_mail_body($str)
     {
-        if (preg_match('/^[^"$]*$/', $str) === 1) {
-            return true;
+        if (preg_match('/["\$\{\}]/', $str) === 1) {
+            $this->form_validation->set_message('_valid_mail_body', lang('form_validation_valid_mail_body'));
+            return false;
         }
-        $this->form_validation->set_message('_valid_mail_body', lang('form_validation_valid_mail_body'));
-        return false;
+
+        return true;
     }
 }

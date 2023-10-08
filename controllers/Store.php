@@ -43,7 +43,7 @@ class Store extends BS_Controller
     }
 
     /**
-     * View store category
+     * View category
      *
      * @param string $slug
      * @return string

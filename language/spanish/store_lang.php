@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['store'] = 'Tienda';
 $lang['cart'] = 'Carrito';
 
+$lang['my_orders'] = 'Mis Órdenes';
 $lang['product'] = 'Producto';
 $lang['products'] = 'Productos';
 $lang['order'] = 'Orden';
@@ -49,8 +50,8 @@ $lang['edit_command'] = 'Editar comando';
  * Form validation
 */
 $lang['form_validation_valid_product_name'] = "El campo {field} sólo puede contener caracteres alfanuméricos, espacios y los caracteres ' - _ . : [ ]";
-$lang['form_validation_valid_custom_command'] = 'El campo {field} sólo puede contener caracteres alfanuméricos, espacios y los caracteres . : {}';
-$lang['form_validation_valid_mail_body'] = 'El campo {field} sólo puede contener alfanuméricos, espacios y los caracteres ! . : {} - _';
+$lang['form_validation_valid_custom_command'] = 'El campo {field} sólo puede contener caracteres alfanuméricos, espacios y los caracteres . : { }';
+$lang['form_validation_valid_mail_body'] = 'El campo {field} no puede contener los caracteres " $ { }';
 
 /**
  * Alerts
