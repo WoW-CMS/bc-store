@@ -8,6 +8,8 @@ $route['store/cart']['get'] = 'store/cart';
 $route['store/cart/checkout']['get'] = 'store/checkout';
 $route['store/cart/delete/(:any)']['get'] = 'store/remove_product/$1';
 $route['store/cart/quantity']['post'] = 'store/update_quantity';
+$route['store/orders']['get'] = 'store/orders';
+$route['store/orders/view/(:num)']['get'] = 'store/view_order/$1';
 
 $route['store/admin']['get'] = 'admin/index';
 $route['store/admin/settings'] = 'admin/settings';

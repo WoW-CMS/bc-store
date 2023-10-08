@@ -3,7 +3,7 @@
  * BlizzCMS
  *
  * @author WoW-CMS
- * @copyright Copyright (c) 2019 - 2022, WoW-CMS (https://wow-cms.com)
+ * @copyright Copyright (c) 2019 - 2023, WoW-CMS (https://wow-cms.com)
  * @license https://opensource.org/licenses/MIT MIT License
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -303,5 +303,56 @@ class Store extends BS_Controller
 
         $this->session->set_flashdata('success', lang('alert_checkout_success'));
         redirect(site_url('store/cart'));
+    }
+
+    public function orders()
+    {
+        $inputPage = $this->input->get('page');
+        $page      = ctype_digit((string) $inputPage) ? (int) $inputPage : 0;
+
+        $perPage = 25;
+        $offset  = $page > 1 ? ($page - 1) * $perPage : $page; // Calculate offset for paginate
+        $filters = ['user' => $this->session->userdata('id')];
+
+        $this->pagination->initialize([
+            'base_url'   => site_url('store/orders'),
+            'total_rows' => $this->store_order_model->total_paginate($filters),
+            'per_page'   => $perPage
+        ]);
+
+        $data = [
+            'orders'     => $this->store_order_model->paginate($perPage, $offset, $filters),
+            'pagination' => $this->pagination->create_links()
+        ];
+
+        $this->template->title(lang('store'), config_item('app_name'));
+
+        $this->template->build('orders', $data);
+    }
+
+    /**
+     * View order
+     *
+     * @param string $id
+     * @return string
+     */
+    public function view_order($id = null)
+    {
+        $order = $this->store_order_model->find([
+            'id'      => $id,
+            'user_id' => $this->session->userdata('id')
+        ]);
+
+        if (empty($order)) {
+            show_404();
+        }
+
+        $data = [
+            'order' => $order
+        ];
+
+        $this->template->title(lang('store'), config_item('app_name'));
+
+        $this->template->build('view_order', $data);
     }
 }
