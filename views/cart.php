@@ -67,7 +67,7 @@
       <div class="uk-card-footer">
         <div class="uk-grid-small" uk-grid>
           <div class="uk-width-expand@s">
-            <a href="<?= site_url('store') ?>" class="uk-button uk-button-default uk-button-small"><?= lang('continue_buying') ?></a>
+            <a href="<?= site_url('store') ?>" class="uk-button uk-button-default uk-button-small"><i class="fa-solid fa-arrow-left"></i> <?= lang('continue_buying') ?></a>
           </div>
           <div class="uk-width-auto@s uk-flex uk-flex-middle">
             <p class="uk-margin-small uk-text-small"><span class="uk-text-uppercase uk-text-bold uk-margin-small-right"><?= lang('total') ?>:</span> <span class="bc-dp-points" uk-tooltip="title: <?= lang('donation_points') ?>"><?= $this->cart->total_dp() ?></span> &amp; <span class="bc-vp-points" uk-tooltip="title: <?= lang('voting_points') ?>"><?= $this->cart->total_vp() ?></span>

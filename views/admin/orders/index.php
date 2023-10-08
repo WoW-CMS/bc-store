@@ -40,7 +40,7 @@
                 <h3 class="uk-card-title"><?= lang('orders') ?></h3>
               </div>
               <div class="uk-width-auto">
-                <button href="#filter_toggle" class="uk-button uk-button-default uk-button-small" type="button" uk-toggle="target: #filter_toggle; animation: uk-animation-slide-top-small"><i class="fa-solid fa-filter"></i></button>
+                <button class="uk-button uk-button-default uk-button-small" type="button" uk-toggle="target: #filter_toggle; animation: uk-animation-slide-top-small"><i class="fa-solid fa-filter"></i></button>
               </div>
             </div>
           </div>
@@ -82,7 +82,9 @@
                     </td>
                     <td><?= $item->products_sold ?></td>
                     <td><span class="uk-label"><?= $item->status ?></span></td>
-                    <td class="uk-visible@s"><?= $item->created_at ?></td>
+                    <td class="uk-visible@s">
+                      <time datetime="<?= $item->created_at ?>"><?= locate_date($item->created_at) ?></time>
+                    </td>
                     <td>
                       <a href="<?= site_url('store/admin/orders/view/'.$item->id) ?>" class="uk-button uk-button-primary uk-button-small"><?= lang('view') ?></a>
                     </td>
@@ -93,6 +95,7 @@
             </div>
           </div>
         </div>
+        <?= $pagination ?>
       </div>
     </div>
   </div>

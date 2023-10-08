@@ -38,7 +38,7 @@
             </div>
             <div class="uk-width-expand">
               <h6 class="uk-h6 uk-text-bold uk-margin-remove"><?= lang('created_at') ?></h6>
-              <p class="uk-text-meta uk-margin-remove"><?= format_date($order->created_at, 'M j, Y, h:i A') ?></p>
+              <p class="uk-text-meta uk-margin-remove"><time datetime="<?= $order->created_at ?>"><?= locate_date($order->created_at) ?></time></p>
             </div>
           </div>
         </div>

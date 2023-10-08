@@ -112,7 +112,9 @@
                         <img class="uk-preserve-width uk-border-circle" src="<?= user_avatar($item->user_id) ?>" width="32" height="32" alt="<?= $item->username ?>" uk-tooltip="<?= $item->username ?>">
                       </td>
                       <td><?= $item->products_sold ?></td>
-                      <td><?= $item->created_at ?></td>
+                      <td>
+                        <time datetime="<?= $item->created_at ?>"><?= locate_date($item->created_at) ?></time>
+                      </td>
                     </tr>
                     <?php endforeach ?>
                   </tbody>
