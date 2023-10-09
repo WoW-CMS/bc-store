@@ -1,11 +1,11 @@
 # _Store Module_
 
-[![Version](https://img.shields.io/github/v/release/wow-cms/bc-store?color=green&include_prereleases&logo=github&sort=semver&style=flat-square)](https://github.com/WoW-CMS/bc-store/releases)
-[![License](https://img.shields.io/github/license/wow-cms/bc-store?color=blue&style=flat-square)](../LICENSE)
+[![Version](https://img.shields.io/github/v/release/WoW-CMS/bc-store?style=flat-square&logo=github&color=green)](https://github.com/WoW-CMS/bc-store/releases)
+[![License](https://img.shields.io/github/license/WoW-CMS/bc-store?style=flat-square&color=blue)](../LICENSE)
 
 ## Requirements
 
-1. **BlizzCMS version** 2.0.0+
+* [BlizzCMS](https://github.com/WoW-CMS/BlizzCMS) v2+
 
 ## Contributors
 
