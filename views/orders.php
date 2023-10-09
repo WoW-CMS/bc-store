@@ -52,7 +52,7 @@
               <table class="uk-table uk-table-middle uk-table-divider uk-table-small">
                 <thead>
                   <tr>
-                    <th class="uk-table-expand"><?= lang('id') ?></th>
+                    <th class="uk-table-expand"><?= lang('name') ?></th>
                     <th class="uk-width-small"><?= lang('total_dp') ?></th>
                     <th class="uk-width-small"><?= lang('total_vp') ?></th>
                     <th class="uk-width-small"><?= lang('status') ?></th>
@@ -63,7 +63,7 @@
                 <tbody>
                   <?php foreach ($orders as $item): ?>
                   <tr>
-                    <td><?= $item->id ?></td>
+                    <td><?= $item->name ?></td>
                     <td><?= $item->total_dp ?></td>
                     <td><?= $item->total_vp ?></td>
                     <td>

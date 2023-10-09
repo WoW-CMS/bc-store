@@ -37,9 +37,10 @@ class Store_order_model extends BS_Model
      */
     public function paginate($limit, $offset, $filters = [])
     {
-        $query = $this->db->select('store_orders.*, users.nickname, users.username')
+        $query = $this->db->select('store_orders.*, users.nickname, users.username, store_orders_products.name')
             ->from($this->table)
-            ->join('users', 'store_orders.user_id = users.id');
+            ->join('users', 'store_orders.user_id = users.id')
+            ->join('store_orders_products', 'store_orders.id = store_orders_products.order_id');
 
         if (array_key_exists('user', $filters) && $filters['user'] !== '') {
             $query->where('store_orders.user_id', $filters['user']);
