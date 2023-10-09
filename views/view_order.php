@@ -66,6 +66,32 @@
                       <td class="uk-width-1-2"><?= $order->id ?></td>
                     </tr>
                     <tr>
+                      <td class="uk-width-1-2"><?= lang('character') ?></td>
+                      <td class="uk-width-1-2"><?= $character_name ?></td>
+                    </tr>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('product') ?></td>
+                      <td class="uk-width-1-2"><?= $product->name ?></td>
+                    </tr>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('realm') ?></td>
+                      <td class="uk-width-1-2"><?= $realm_name ?></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="uk-width-expand@s">
+                <table class="uk-table bc-table-xsmall">
+                  <tbody>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('voting_points') ?></td>
+                      <td class="uk-width-1-2"><span class="bc-vp-points"><?= $order->total_vp ?></span></td>
+                    </tr>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('donation_points') ?></td>
+                      <td class="uk-width-1-2"><span class="bc-dp-points"><?= $order->total_dp ?></span></td>
+                    </tr>
+                    <tr>
                       <td class="uk-width-1-2"><?= lang('status') ?></td>
                       <td class="uk-width-1-2">
                         <?php if ($order->status === Store_order_model::STATUS_COMPLETED): ?>
@@ -82,20 +108,6 @@
                       <td class="uk-width-1-2">
                         <time datetime="<?= $order->created_at ?>"><?= locate_date($order->created_at) ?></time>
                       </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="uk-width-expand@s">
-                <table class="uk-table bc-table-xsmall">
-                  <tbody>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('voting_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-vp-points"><?= $order->total_vp ?></span></td>
-                    </tr>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('donation_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-dp-points"><?= $order->total_dp ?></span></td>
                     </tr>
                   </tbody>
                 </table>

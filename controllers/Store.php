@@ -342,13 +342,19 @@ class Store extends BS_Controller
             'id'      => $id,
             'user_id' => $this->session->userdata('id')
         ]);
+        $product = $this->store_order_product_model->find(['order_id' => $id]);
+        $character_name = $this->server_characters_model->character_name($product->realm_id, $product->guid);
+        $realm_name = $this->realm_model->get_name($product->realm_id);
 
         if (empty($order)) {
             show_404();
         }
 
         $data = [
-            'order' => $order
+            'order' => $order,
+            'product' => $product,
+            'character_name' => $character_name,
+            'realm_name' => $realm_name,
         ];
 
         $this->template->title(lang('store'), config_item('app_name'));
