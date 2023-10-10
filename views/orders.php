@@ -63,7 +63,7 @@
                 <tbody>
                   <?php foreach ($orders as $item): ?>
                   <tr>
-                    <td><?= $item->name ?></td>
+                    <td><?= $item->id ?></td>
                     <td><?= $item->total_dp ?></td>
                     <td><?= $item->total_vp ?></td>
                     <td>

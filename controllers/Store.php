@@ -338,13 +338,23 @@ class Store extends BS_Controller
      */
     public function view_order($id = null)
     {
+        $inputPage = $this->input->get('page');
+        $page      = ctype_digit((string) $inputPage) ? (int) $inputPage : 0;
+
+        $perPage = 25;
+        $offset  = $page > 1 ? ($page - 1) * $perPage : $page; // Calculate offset for paginate
+        $filters = ['order_id' => $id];
+
+        $this->pagination->initialize([
+            'base_url'   => site_url('store/orders/view/' . $id),
+            'total_rows' => $this->store_order_product_model->total_paginate($filters),
+            'per_page'   => $perPage
+        ]);
+
         $order = $this->store_order_model->find([
             'id'      => $id,
             'user_id' => $this->session->userdata('id')
         ]);
-        $product = $this->store_order_product_model->find(['order_id' => $id]);
-        $character_name = $this->server_characters_model->character_name($product->realm_id, $product->guid);
-        $realm_name = $this->realm_model->get_name($product->realm_id);
 
         if (empty($order)) {
             show_404();
@@ -352,9 +362,8 @@ class Store extends BS_Controller
 
         $data = [
             'order' => $order,
-            'product' => $product,
-            'character_name' => $character_name,
-            'realm_name' => $realm_name,
+            'products' => $this->store_order_product_model->paginate($perPage, $offset, $filters),
+            'pagination' => $this->pagination->create_links()
         ];
 
         $this->template->title(lang('store'), config_item('app_name'));

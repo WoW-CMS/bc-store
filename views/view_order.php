@@ -57,39 +57,13 @@
             </div>
           </div>
           <div class="uk-card-body">
-            <div class="uk-grid-small uk-grid-divider" uk-grid>
+          <div class="uk-grid-small uk-grid-divider" uk-grid>
               <div class="uk-width-expand@s">
                 <table class="uk-table bc-table-xsmall">
                   <tbody>
                     <tr>
                       <td class="uk-width-1-2"><?= lang('id') ?></td>
                       <td class="uk-width-1-2"><?= $order->id ?></td>
-                    </tr>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('character') ?></td>
-                      <td class="uk-width-1-2"><?= $character_name ?></td>
-                    </tr>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('product') ?></td>
-                      <td class="uk-width-1-2"><?= $product->name ?></td>
-                    </tr>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('realm') ?></td>
-                      <td class="uk-width-1-2"><?= $realm_name ?></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="uk-width-expand@s">
-                <table class="uk-table bc-table-xsmall">
-                  <tbody>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('voting_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-vp-points"><?= $order->total_vp ?></span></td>
-                    </tr>
-                    <tr>
-                      <td class="uk-width-1-2"><?= lang('donation_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-dp-points"><?= $order->total_dp ?></span></td>
                     </tr>
                     <tr>
                       <td class="uk-width-1-2"><?= lang('status') ?></td>
@@ -112,7 +86,42 @@
                   </tbody>
                 </table>
               </div>
+              <div class="uk-width-expand@s">
+                <table class="uk-table bc-table-xsmall">
+                  <tbody>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('voting_points') ?></td>
+                      <td class="uk-width-1-2"><span class="bc-vp-points"><?= $order->total_vp ?></span></td>
+                    </tr>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('donation_points') ?></td>
+                      <td class="uk-width-1-2"><span class="bc-dp-points"><?= $order->total_dp ?></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <h4 class="uk-h5 uk-text-bold"><?= lang('products') ?></h4>
+            <table class="uk-table bc-table-xsmall">
+              <thead>
+                <tr>
+                  <th class="uk-table-expand"><?= lang('name') ?></th>
+                  <th class="uk-width-small"><?= lang('price') ?></th>
+                  <th class="uk-width-small"><?= lang('quantity') ?></th>
+                  <th class="uk-width-small"><?= lang('total') ?></th>
+                <tr>
+              </thead>
+              <tbody>
+                <?php foreach ($products as $item): ?>
+                <tr>
+                  <td><?= $item->name ?></td>
+                  <td><span class="bc-vp-points" style="margin-right: 10px"><?= $item->vp ?></span><span class="bc-dp-points"><?= $item->dp ?></span></td>
+                  <td><?= $item->quantity ?></td>
+                  <td><span class="bc-vp-points" style="margin-right: 10px"><?= $item->vp * $item->quantity ?></span><span class="bc-dp-points"><?= $item->dp * $item->quantity ?></span></td>
+                </tr>
+                <?php endforeach ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
