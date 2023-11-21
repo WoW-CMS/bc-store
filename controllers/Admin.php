@@ -315,10 +315,11 @@ class Admin extends Admin_Controller
         $this->form_validation->set_rules('realm', lang('realm'), 'trim|required|is_natural_no_zero');
         $this->form_validation->set_rules('description', lang('description'), 'trim');
         $this->form_validation->set_rules('file', lang('file'), 'callback__file_required');
-        $this->form_validation->set_rules('currency', lang('currency'), 'trim|required|in_list[dp,vp,both]');
+        $this->form_validation->set_rules('currency', lang('currency'), 'trim|required|in_list[dp,vp,both,choice]');
         $this->form_validation->set_rules('dp', lang('dp'), 'trim|is_natural');
         $this->form_validation->set_rules('vp', lang('vp'), 'trim|is_natural');
         $this->form_validation->set_rules('visible', lang('visible'), 'trim');
+        $this->form_validation->set_rules('highlight', lang('highlight'), 'trim');
 
         if ($this->input->method() === 'post' && $this->form_validation->run()) {
             $directory = current_date('Y') . '/' . current_date('m') . '/';
@@ -348,9 +349,10 @@ class Admin extends Admin_Controller
                 'description' => $this->input->post('description', true),
                 'image'       => $directory . $uploadData['file_name'],
                 'currency'    => $currency,
-                'dp'          => in_array($currency, [CURRENCY_DP, CURRENCY_BOTH], true) ? $this->input->post('dp') : 0,
-                'vp'          => in_array($currency, [CURRENCY_VP, CURRENCY_BOTH], true) ? $this->input->post('vp') : 0,
-                'visible'     => empty($this->input->post('visible', true)) ? 0 : 1
+                'dp'          => in_array($currency, [Store_product_model::CURRENCY_DP, Store_product_model::CURRENCY_BOTH, Store_product_model::CURRENCY_CHOICE], true) ? $this->input->post('dp') : 0,
+                'vp'          => in_array($currency, [Store_product_model::CURRENCY_VP, Store_product_model::CURRENCY_BOTH, Store_product_model::CURRENCY_CHOICE], true) ? $this->input->post('vp') : 0,
+                'visible'     => empty($this->input->post('visible', true)) ? 0 : 1,
+                'highlight'   => empty($this->input->post('highlight', true)) ? 0 : 1
             ]);
 
             $productId = $this->db->insert_id();
@@ -396,10 +398,11 @@ class Admin extends Admin_Controller
         $this->form_validation->set_rules('category', lang('category'), 'trim|required|is_natural_no_zero');
         $this->form_validation->set_rules('realm', lang('realm'), 'trim|required|is_natural_no_zero');
         $this->form_validation->set_rules('description', lang('description'), 'trim');
-        $this->form_validation->set_rules('currency', lang('currency'), 'trim|required|in_list[dp,vp,both]');
+        $this->form_validation->set_rules('currency', lang('currency'), 'trim|required|in_list[dp,vp,both,choice]');
         $this->form_validation->set_rules('dp', lang('dp'), 'trim|is_natural');
         $this->form_validation->set_rules('vp', lang('vp'), 'trim|is_natural');
         $this->form_validation->set_rules('visible', lang('visible'), 'trim');
+        $this->form_validation->set_rules('highlight', lang('highlight'), 'trim');
 
         if ($this->input->method() === 'post' && $this->form_validation->run()) {
             if (isset($_FILES['file']['name']) && $_FILES['file']['name'] !== '') {
@@ -439,9 +442,10 @@ class Admin extends Admin_Controller
                 'name'        => $this->input->post('name'),
                 'description' => $this->input->post('description', true),
                 'currency'    => $currency,
-                'dp'          => in_array($currency, [CURRENCY_DP, CURRENCY_BOTH], true) ? $this->input->post('dp') : 0,
-                'vp'          => in_array($currency, [CURRENCY_VP, CURRENCY_BOTH], true) ? $this->input->post('vp') : 0,
-                'visible'     => empty($this->input->post('visible', true)) ? 0 : 1
+                'dp'          => in_array($currency, [Store_product_model::CURRENCY_DP, Store_product_model::CURRENCY_BOTH, Store_product_model::CURRENCY_CHOICE], true) ? $this->input->post('dp') : 0,
+                'vp'          => in_array($currency, [Store_product_model::CURRENCY_VP, Store_product_model::CURRENCY_BOTH, Store_product_model::CURRENCY_CHOICE], true) ? $this->input->post('vp') : 0,
+                'visible'     => empty($this->input->post('visible', true)) ? 0 : 1,
+                'highlight'   => empty($this->input->post('highlight', true)) ? 0 : 1
             ], ['id' => $productId]);
 
             $this->log_model->create('store product', 'edit', 'Edited a product', [
@@ -537,7 +541,7 @@ class Admin extends Admin_Controller
 
             $this->form_validation->set_rules('type', lang('type'), 'trim|required|in_list[item,custom]');
 
-            if ($inputs['type'] === 'item') {
+            if ($inputs['type'] === Store_command_model::TYPE_ITEM) {
                 $this->form_validation->set_rules('item', lang('item'), 'trim|required|is_natural_no_zero');
                 $this->form_validation->set_rules('quantity', lang('quantity'), 'trim|required|is_natural_no_zero');
             } else {
@@ -550,9 +554,9 @@ class Admin extends Admin_Controller
                 $this->store_command_model->insert([
                     'product_id' => $productId,
                     'type'       => $inputs['type'],
-                    'item'       => $inputs['type'] === 'item' ? $inputs['item'] : 0,
-                    'quantity'   => $inputs['type'] === 'item' ? $inputs['quantity'] : 0,
-                    'command'    => $inputs['type'] === 'custom' ? $inputs['command'] : ''
+                    'item'       => $inputs['type'] === Store_command_model::TYPE_ITEM ? $inputs['item'] : 0,
+                    'quantity'   => $inputs['type'] === Store_command_model::TYPE_ITEM ? $inputs['quantity'] : 0,
+                    'command'    => $inputs['type'] === Store_command_model::TYPE_CUSTOM ? $inputs['command'] : ''
                 ]);
 
                 $commandId = $this->db->insert_id();
@@ -593,7 +597,7 @@ class Admin extends Admin_Controller
 
             $this->form_validation->set_rules('type', lang('type'), 'trim|required|in_list[item,custom]');
 
-            if ($inputs['type'] === 'item') {
+            if ($inputs['type'] === Store_command_model::TYPE_ITEM) {
                 $this->form_validation->set_rules('item', lang('item'), 'trim|required|is_natural_no_zero');
                 $this->form_validation->set_rules('quantity', lang('quantity'), 'trim|required|is_natural_no_zero');
             } else {
@@ -605,9 +609,9 @@ class Admin extends Admin_Controller
             if ($this->form_validation->run()) {
                 $this->store_command_model->update([
                     'type'     => $inputs['type'],
-                    'item'     => $inputs['type'] === 'item' ? $inputs['item'] : 0,
-                    'quantity' => $inputs['type'] === 'item' ? $inputs['quantity'] : 0,
-                    'command'  => $inputs['type'] === 'custom' ? $inputs['command'] : ''
+                    'item'     => $inputs['type'] === Store_command_model::TYPE_ITEM ? $inputs['item'] : 0,
+                    'quantity' => $inputs['type'] === Store_command_model::TYPE_ITEM ? $inputs['quantity'] : 0,
+                    'command'  => $inputs['type'] === Store_command_model::TYPE_CUSTOM ? $inputs['command'] : ''
                 ], ['id' => $commandId]);
 
                 $this->session->set_flashdata('success', lang('alert_product_updated'));
@@ -681,9 +685,23 @@ class Admin extends Admin_Controller
             show_404();
         }
 
+        $inputPage = $this->input->get('page');
+        $page      = ctype_digit((string) $inputPage) ? (int) $inputPage : 0;
+
+        $perPage = 50;
+        $offset  = $page > 1 ? ($page - 1) * $perPage : $page; // Calculate offset for paginate
+        $filters = ['order' => $id];
+
+        $this->pagination->initialize([
+            'base_url'   => site_url('store/admin/orders/view/' . $id),
+            'total_rows' => $this->store_order_product_model->total_paginate($filters),
+            'per_page'   => $perPage
+        ]);
+
         $data = [
-            'order'    => $order,
-            'products' => $this->store_order_product_model->find_all(['order_id' => $id])
+            'order'      => $order,
+            'products'   => $this->store_order_product_model->paginate($perPage, $offset, $filters),
+            'pagination' => $this->pagination->create_links()
         ];
 
         $this->template->title(lang('admin_panel'), config_item('app_name'));

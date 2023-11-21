@@ -100,7 +100,7 @@
                     <tr>
                       <th><?= lang('id') ?></th>
                       <th class="uk-table-shrink"><?= lang('user') ?></th>
-                      <th class="uk-width-small"><?= lang('products_sold') ?></th>
+                      <th class="uk-width-medium"><?= lang('purchased_products') ?></th>
                       <th class="uk-width-medium"><?= lang('created_at') ?></th>
                     </tr>
                   </thead>
@@ -111,7 +111,7 @@
                       <td class="uk-text-center">
                         <img class="uk-preserve-width uk-border-circle" src="<?= user_avatar($item->user_id) ?>" width="32" height="32" alt="<?= $item->username ?>" uk-tooltip="<?= $item->username ?>">
                       </td>
-                      <td><?= $item->products_sold ?></td>
+                      <td><?= $item->total_products ?></td>
                       <td>
                         <time datetime="<?= $item->created_at ?>"><?= locate_date($item->created_at) ?></time>
                       </td>

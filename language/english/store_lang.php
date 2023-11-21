@@ -12,11 +12,16 @@ $lang['orders'] = 'Orders';
 $lang['order_details'] = 'Order details';
 $lang['commands'] = 'Commands';
 $lang['custom'] = 'Custom';
-$lang['products_sold'] = 'Products sold';
+$lang['highlight'] = 'Highlight';
+$lang['purchased_products'] = 'Purchased products';
+$lang['dp_and_vp'] = 'DP & VP';
+$lang['dp_or_vp'] = 'DP or VP';
 
-$lang['top_products'] = 'Top products';
+$lang['featured_products'] = 'Featured products';
 $lang['view_product'] = 'View product';
 $lang['add_cart'] = 'Add to cart';
+$lang['back_store'] = 'Back to store';
+$lang['proceed_checkout'] = 'Proceed to checkout';
 
 $lang['latest_purchases'] = 'Latest purchases';
 $lang['categories_added'] = 'Categories added';

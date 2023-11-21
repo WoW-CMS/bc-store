@@ -17,7 +17,7 @@ class Migration_Create_store_orders extends CI_Migration
                 'constraint' => 20,
                 'unsigned' => TRUE
             ],
-            'products_sold' => [
+            'total_products' => [
                 'type' => 'INT',
                 'constraint' => 10,
                 'unsigned' => TRUE,

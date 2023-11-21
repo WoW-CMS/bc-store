@@ -49,36 +49,31 @@
         <?= $template['partials']['alerts'] ?>
         <div class="uk-card uk-card-default">
           <div class="uk-card-header">
-            <div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
-              <div class="uk-width-expand">
-                <h3 class="uk-card-title"><i class="fa-solid fa-file-invoice"></i> <?= lang('order_details') ?></h3>
-              </div>
-              <div class="uk-width-auto"></div>
-            </div>
+            <h3 class="uk-card-title"><?= lang('order_details') ?></h3>
           </div>
           <div class="uk-card-body">
-          <div class="uk-grid-small uk-grid-divider" uk-grid>
+            <div class="uk-grid-small uk-grid-divider" uk-grid>
               <div class="uk-width-expand@s">
                 <table class="uk-table bc-table-xsmall">
                   <tbody>
                     <tr>
-                      <td class="uk-width-1-2"><?= lang('id') ?></td>
+                      <td class="uk-width-1-2"><?= lang('id') ?>:</td>
                       <td class="uk-width-1-2"><?= $order->id ?></td>
                     </tr>
                     <tr>
-                      <td class="uk-width-1-2"><?= lang('status') ?></td>
+                      <td class="uk-width-1-2"><?= lang('status') ?>:</td>
                       <td class="uk-width-1-2">
                         <?php if ($order->status === Store_order_model::STATUS_COMPLETED): ?>
-                        <span class="uk-label uk-label-success"><?= $order->status ?></span>
+                        <span class="uk-label uk-label-success"><?= lang('completed') ?></span>
                         <?php elseif ($order->status === Store_order_model::STATUS_PROCESSING): ?>
-                        <span class="uk-label uk-label-danger"><?= $order->status ?></span>
+                        <span class="uk-label uk-label-danger"><?= lang('processing') ?></span>
                         <?php else: ?>
                         <span class="uk-label"><?= $order->status ?></span>
                         <?php endif ?>
                       </td>
                     </tr>
                     <tr>
-                      <td class="uk-width-1-2"><?= lang('created_at') ?></td>
+                      <td class="uk-width-1-2"><?= lang('created_at') ?>:</td>
                       <td class="uk-width-1-2">
                         <time datetime="<?= $order->created_at ?>"><?= locate_date($order->created_at) ?></time>
                       </td>
@@ -90,40 +85,67 @@
                 <table class="uk-table bc-table-xsmall">
                   <tbody>
                     <tr>
-                      <td class="uk-width-1-2"><?= lang('voting_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-vp-points"><?= $order->total_vp ?></span></td>
+                      <td class="uk-width-1-2"><?= lang('purchased_products') ?>:</td>
+                      <td class="uk-width-1-2"><?= $order->total_products ?></td>
                     </tr>
                     <tr>
-                      <td class="uk-width-1-2"><?= lang('donation_points') ?></td>
-                      <td class="uk-width-1-2"><span class="bc-dp-points"><?= $order->total_dp ?></span></td>
+                      <td class="uk-width-1-2"><?= lang('total_vp') ?>:</td>
+                      <td class="uk-width-1-2">
+                        <span class="bc-vp-points"><?= $order->total_vp ?></span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="uk-width-1-2"><?= lang('total_dp') ?>:</td>
+                      <td class="uk-width-1-2">
+                        <span class="bc-dp-points"><?= $order->total_dp ?></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-            <h4 class="uk-h5 uk-text-bold"><?= lang('products') ?></h4>
-            <table class="uk-table bc-table-xsmall">
-              <thead>
-                <tr>
-                  <th class="uk-table-expand"><?= lang('name') ?></th>
-                  <th class="uk-width-small"><?= lang('price') ?></th>
-                  <th class="uk-width-small"><?= lang('quantity') ?></th>
-                  <th class="uk-width-small"><?= lang('total') ?></th>
-                <tr>
-              </thead>
-              <tbody>
-                <?php foreach ($products as $item): ?>
-                <tr>
-                  <td><?= $item->name ?></td>
-                  <td><span class="bc-vp-points" style="margin-right: 10px"><?= $item->vp ?></span><span class="bc-dp-points"><?= $item->dp ?></span></td>
-                  <td><?= $item->quantity ?></td>
-                  <td><span class="bc-vp-points" style="margin-right: 10px"><?= $item->vp * $item->quantity ?></span><span class="bc-dp-points"><?= $item->dp * $item->quantity ?></span></td>
-                </tr>
-                <?php endforeach ?>
-              </tbody>
-            </table>
           </div>
         </div>
+        <div class="uk-card uk-card-default uk-margin">
+          <div class="uk-card-header">
+            <h3 class="uk-card-title"><?= lang('purchased_products') ?></h3>
+          </div>
+          <div class="uk-card-body uk-padding-remove">
+            <div class="uk-overflow-auto">
+              <table class="uk-table uk-table-middle uk-table-divider uk-table-small">
+                <thead>
+                  <tr>
+                    <th class="uk-table-expand"><?= lang('name') ?></th>
+                    <th class="uk-width-small"><?= lang('quantity') ?></th>
+                    <th class="uk-width-small"><?= lang('dp') ?></th>
+                    <th class="uk-width-small"><?= lang('vp') ?></th>
+                    <th class="uk-width-small"><?= lang('realm') ?></th>
+                    <th class="uk-width-small"><?= lang('character') ?></th>
+                 </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($products as $item): ?>
+                  <tr>
+                    <td><?= $item->name ?></td>
+                    <td><?= $item->quantity ?></td>
+                    <td>
+                      <span class="bc-dp-points"><?= (int) $item->dp * (int) $item->quantity ?></span>
+                    </td>
+                    <td>
+                      <span class="bc-vp-points"><?= (int) $item->vp * (int) $item->quantity ?></span>
+                    </td>
+                    <td><?= $item->realm_name ?></td>
+                    <td><?= $this->server_characters_model->character_name($item->realm_id, $item->guid) ?></td>
+                  </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <?php if (isset($products) && ! empty($products)): ?>
+        <?= $pagination ?>
+        <?php endif ?>
       </div>
     </div>
   </div>

@@ -64,7 +64,9 @@
                 </div>
                 <div class="uk-width-expand">
                   <h5 class="uk-text-bold uk-margin-remove"><?= html_escape($item->name) ?></h5>
-                  <p class="uk-text-small uk-text-uppercase uk-margin-remove"><?= $item->type ?></p>
+                  <p class="uk-text-small uk-text-uppercase uk-margin-remove">
+                    <?= $item->type === ITEM_DROPDOWN ? '<i class="fa-solid fa-list"></i>' : '<i class="fa-solid fa-link"></i>' ?> <?= $item->type ?>
+                  </p>
                 </div>
                 <div class="uk-width-auto">
                   <div class="uk-button-group">
@@ -108,7 +110,9 @@
                         </div>
                         <div class="uk-width-expand">
                           <h5 class="uk-text-bold uk-margin-remove"><?= html_escape($subitem->name) ?></h5>
-                          <p class="uk-text-small uk-text-uppercase uk-margin-remove"><?= $subitem->type ?></p>
+                          <p class="uk-text-small uk-text-uppercase uk-margin-remove">
+                            <?= $subitem->type === ITEM_DROPDOWN ? '<i class="fa-solid fa-list"></i>' : '<i class="fa-solid fa-link"></i>' ?> <?= $subitem->type ?>
+                          </p>
                         </div>
                         <div class="uk-width-auto">
                           <div class="uk-button-group">

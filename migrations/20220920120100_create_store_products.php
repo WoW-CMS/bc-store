@@ -35,7 +35,7 @@ class Migration_Create_store_products extends CI_Migration {
                 'null' => TRUE
             ],
             'currency' => [
-                'type' => 'ENUM("vp","dp","both")'
+                'type' => 'ENUM("vp","dp","both","choice")'
             ],
             'dp' => [
                 'type' => 'INT',
@@ -54,6 +54,12 @@ class Migration_Create_store_products extends CI_Migration {
                 'constraint' => 1,
                 'unsigned' => TRUE,
                 'default' => 1
+            ],
+            'highlight' => [
+                'type' => 'TINYINT',
+                'constraint' => 1,
+                'unsigned' => TRUE,
+                'default' => 0
             ]
         ]);
         $this->dbforge->add_key('id', true);

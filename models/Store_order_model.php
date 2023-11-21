@@ -39,8 +39,7 @@ class Store_order_model extends BS_Model
     {
         $query = $this->db->select('store_orders.*, users.nickname, users.username')
             ->from($this->table)
-            ->join('users', 'store_orders.user_id = users.id')
-            ->group_by('store_orders.id');
+            ->join('users', 'store_orders.user_id = users.id');
 
         if (array_key_exists('user', $filters) && $filters['user'] !== '') {
             $query->where('store_orders.user_id', $filters['user']);

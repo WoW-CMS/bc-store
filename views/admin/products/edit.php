@@ -59,24 +59,31 @@
                   <label class="uk-form-label"><?= lang('currency') ?></label>
                   <div class="uk-radio-button-group">
                     <div class="uk-radio-container">
-                      <input class="uk-radio-button" type="radio" name="currency" value="<?= CURRENCY_DP ?>" <?= set_radio('currency', CURRENCY_DP, CURRENCY_DP === $product->currency) ?>>
+                      <input class="uk-radio-button" type="radio" name="currency" value="<?= Store_product_model::CURRENCY_DP ?>" <?= set_radio('currency', Store_product_model::CURRENCY_DP, Store_product_model::CURRENCY_DP === $product->currency) ?>>
                       <div class="uk-label-container">
                         <div class="uk-label-dot"></div>
                         <label><?= lang('dp') ?></label>
                       </div>
                     </div>
                     <div class="uk-radio-container">
-                      <input class="uk-radio-button" type="radio" name="currency" value="<?= CURRENCY_VP ?>" <?= set_radio('currency', CURRENCY_VP, CURRENCY_VP === $product->currency) ?>>
+                      <input class="uk-radio-button" type="radio" name="currency" value="<?= Store_product_model::CURRENCY_VP ?>" <?= set_radio('currency', Store_product_model::CURRENCY_VP, Store_product_model::CURRENCY_VP === $product->currency) ?>>
                       <div class="uk-label-container">
                         <div class="uk-label-dot"></div>
                         <label><?= lang('vp') ?></label>
                       </div>
                     </div>
                     <div class="uk-radio-container">
-                      <input class="uk-radio-button" type="radio" name="currency" value="<?= CURRENCY_BOTH ?>" <?= set_radio('currency', CURRENCY_BOTH, CURRENCY_BOTH === $product->currency) ?>>
+                      <input class="uk-radio-button" type="radio" name="currency" value="<?= Store_product_model::CURRENCY_BOTH ?>" <?= set_radio('currency', Store_product_model::CURRENCY_BOTH, Store_product_model::CURRENCY_BOTH === $product->currency) ?>>
                       <div class="uk-label-container">
                         <div class="uk-label-dot"></div>
-                        <label><?= lang('dp_vp') ?></label>
+                        <label><?= lang('dp_and_vp') ?></label>
+                      </div>
+                    </div>
+                    <div class="uk-radio-container">
+                      <input class="uk-radio-button" type="radio" name="currency" value="<?= Store_product_model::CURRENCY_CHOICE ?>" <?= set_radio('currency', Store_product_model::CURRENCY_CHOICE, Store_product_model::CURRENCY_CHOICE === $product->currency) ?>>
+                      <div class="uk-label-container">
+                        <div class="uk-label-dot"></div>
+                        <label><?= lang('dp_or_vp') ?></label>
                       </div>
                     </div>
                   </div>
@@ -127,7 +134,7 @@
             <li>
               <a class="uk-accordion-title" href="#"><i class="fa-solid fa-toggle-off"></i> <?= lang('optional') ?></a>
               <div class="uk-accordion-content">
-                <div class="uk-grid-small uk-grid-divider uk-child-width-1-1" uk-grid>
+                <div class="uk-grid-small uk-child-width-1-1" uk-grid>
                   <div>
                     <div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
                       <div class="uk-width-auto">
@@ -139,6 +146,20 @@
                       </div>
                       <div class="uk-width-expand">
                         <p class="uk-text-secondary uk-margin-remove"><?= lang('visible') ?></p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
+                      <div class="uk-width-auto">
+                        <label class="uk-switch uk-display-block">
+                          <input type="checkbox" name="highlight" value="1" <?= set_checkbox('highlight', '1', '1' === $product->highlight) ?>>
+                          <div class="uk-switch-slider"></div>
+                        </label>
+                        <?= form_error('highlight', '<span class="uk-text-small uk-text-danger">', '</span>') ?>
+                      </div>
+                      <div class="uk-width-expand">
+                        <p class="uk-text-secondary uk-margin-remove"><?= lang('highlight') ?></p>
                       </div>
                     </div>
                   </div>

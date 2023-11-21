@@ -53,7 +53,15 @@
             </div>
             <div class="uk-width-expand">
               <h6 class="uk-h6 uk-text-bold uk-margin-remove"><?= lang('status') ?></h6>
-              <p class="uk-text-meta uk-margin-remove"><?= $order->status ?></p>
+              <p class="uk-text-meta uk-margin-remove">
+                <?php if ($order->status === Store_order_model::STATUS_COMPLETED): ?>
+                <span class="uk-label uk-label-success"><?= lang('completed') ?></span>
+                <?php elseif ($order->status === Store_order_model::STATUS_PROCESSING): ?>
+                <span class="uk-label uk-label-danger"><?= lang('processing') ?></span>
+                <?php else: ?>
+                <span class="uk-label"><?= $order->status ?></span>
+                <?php endif ?>
+              </p>
             </div>
           </div>
         </div>
@@ -106,7 +114,7 @@
     </div>
     <div class="uk-card uk-card-default uk-margin">
       <div class="uk-card-header">
-        <h6 class="uk-h6 uk-text-bold"><?= lang('products_sold') ?> (<span class="uk-text-primary"><?= $order->products_sold ?></span>)</h5>
+        <h6 class="uk-h6 uk-text-bold"><?= lang('purchased_products') ?> (<span class="uk-text-primary"><?= $order->total_products ?></span>)</h6>
       </div>
       <div class="uk-card-body uk-padding-remove">
         <div class="uk-overflow-auto">
@@ -117,6 +125,7 @@
                 <th class="uk-width-small"><?= lang('quantity') ?></th>
                 <th class="uk-width-small"><?= lang('dp') ?></th>
                 <th class="uk-width-small"><?= lang('vp') ?></th>
+                <th class="uk-width-small"><?= lang('realm') ?></th>
                 <th class="uk-width-small"><?= lang('character') ?></th>
               </tr>
             </thead>
@@ -127,6 +136,7 @@
                 <td><?= $item->quantity ?></td>
                 <td><?= (int) $item->dp * (int) $item->quantity ?></td>
                 <td><?= (int) $item->vp * (int) $item->quantity ?></td>
+                <td><?= $this->realm_model->get_name($item->realm_id) ?></td>
                 <td><?= $this->server_characters_model->character_name($item->realm_id, $item->guid) ?></td>
               </tr>
               <?php endforeach ?>
@@ -135,6 +145,6 @@
         </div>
       </div>
     </div>
-    <a href="<?= site_url('store/admin/orders') ?>" class="uk-button uk-button-primary"><?= lang('back') ?></a>
+    <?= $pagination ?>
   </div>
 </section>

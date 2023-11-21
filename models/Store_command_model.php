@@ -6,6 +6,14 @@ class Store_command_model extends BS_Model
     protected $table = 'store_commands';
 
     /**
+     * Command type
+     *
+     * @var string
+     */
+    public const TYPE_ITEM   = 'item';
+    public const TYPE_CUSTOM = 'custom';
+
+    /**
      * Class constructor
      *
      * @return void

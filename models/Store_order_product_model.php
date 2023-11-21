@@ -27,17 +27,19 @@ class Store_order_product_model extends BS_Model
      */
     public function paginate($limit, $offset, $filters = [])
     {
-        $query = $this->db->select('store_orders_products.*, store_products.name, realms.realm_name')
+        $query = $this->db->select('store_orders_products.*, realms.realm_name')
             ->from($this->table)
-            ->join('store_products', 'store_orders_products.product_id = store_products.id')
-            ->join('realms', 'store_orders_products.realm_id = realms.id')
-            ->where('store_orders_products.order_id', $filters['order_id']);
-        
+            ->join('realms', 'store_orders_products.realm_id = realms.id', 'left');
+
+        if (array_key_exists('order', $filters) && $filters['order'] !== '') {
+            $query->where('store_orders_products.order_id', $filters['order']);
+        }
+
         if (array_key_exists('search', $filters) && $filters['search'] !== '') {
             $query->group_start()
                 ->or_like([
-                    'store_orders_products.id' => $filters['search'],
-                    'store_products.name'      => $filters['search']
+                    'store_orders_products.id'   => $filters['search'],
+                    'store_orders_products.name' => $filters['search']
                 ])
                 ->group_end();
         }
@@ -49,23 +51,26 @@ class Store_order_product_model extends BS_Model
     }
 
     /**
-     * Get total rows to paginate
+     * Count total rows to paginate
      *
      * @param array $filters
      * @return int
      */
     public function total_paginate($filters = [])
     {
-        $query = $this->db->select('store_orders_products.*, store_products.name, realms.realm_name')
+        $query = $this->db->select('store_orders_products.*, realms.realm_name')
             ->from($this->table)
-            ->join('store_products', 'store_orders_products.product_id = store_products.id')
-            ->join('realms', 'store_orders_products.realm_id = realms.id');
-        
+            ->join('realms', 'store_orders_products.realm_id = realms.id', 'left');
+
+        if (array_key_exists('order', $filters) && $filters['order'] !== '') {
+            $query->where('store_orders_products.order_id', $filters['order']);
+        }
+
         if (array_key_exists('search', $filters) && $filters['search'] !== '') {
             $query->group_start()
                 ->or_like([
-                    'store_orders_products.id' => $filters['search'],
-                    'store_products.name'      => $filters['search']
+                    'store_orders_products.id'   => $filters['search'],
+                    'store_orders_products.name' => $filters['search']
                 ])
                 ->group_end();
         }

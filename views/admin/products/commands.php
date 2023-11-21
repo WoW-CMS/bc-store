@@ -37,7 +37,8 @@
         <div class="uk-card uk-card-default uk-card-header uk-margin">
           <div class="uk-grid-small uk-flex uk-flex-middle" uk-grid>
             <div class="uk-width-expand">
-              <h3 class="uk-card-title"><?= lang('product_commands') ?> (<span class="uk-text-primary"><?= $product->name ?></span>)</h3>
+              <p class="uk-text-small uk-margin-remove"><?= lang('product_commands') ?></p>
+              <h3 class="uk-card-title uk-margin-remove"><?= html_escape($product->name) ?></h3>
             </div>
             <div class="uk-width-auto">
               <a href="<?= site_url('store/admin/products/'.$product->id.'/add') ?>" class="uk-button uk-button-default uk-button-small"><i class="fa-solid fa-pen"></i> <?= lang('add') ?></a>

@@ -7,7 +7,7 @@
           <li><a href="<?= site_url('admin/modules') ?>"><?= lang('modules') ?></a></li>
           <li><a href="<?= site_url('store/admin') ?>"><?= lang('store') ?></a></li>
           <li><a href="<?= site_url('store/admin/products') ?>"><?= lang('products') ?></a></li>
-          <li><a href="<?= site_url('store/admin/products/'. $command->product_id) ?>"><?= lang('commands') ?></a></li>
+          <li><a href="<?= site_url('store/admin/products/'. $command->product_id) ?>"><?= html_escape($product->name) ?></a></li>
         </ul>
         <h1 class="uk-h3 uk-text-bold uk-margin-remove"><?= lang('edit_command') ?></h1>
       </div>
@@ -21,14 +21,14 @@
             <label class="uk-form-label"><?= lang('type') ?></label>
             <div class="uk-radio-button-group bc-show-group">
               <div class="uk-radio-container">
-                <input class="uk-radio-button" type="radio" name="type" value="item" <?= set_radio('type', 'item', 'item' === $command->type) ?>>
+                <input class="uk-radio-button" type="radio" name="type" value="item" <?= set_radio('type', Store_command_model::TYPE_ITEM, Store_command_model::TYPE_ITEM === $command->type) ?>>
                 <div class="uk-label-container">
                   <div class="uk-label-dot"></div>
                   <label><?= lang('item') ?></label>
                 </div>
               </div>
               <div class="uk-radio-container">
-                <input class="uk-radio-button" type="radio" name="type" value="custom" <?= set_radio('type', 'custom', 'custom' === $command->type) ?>>
+                <input class="uk-radio-button" type="radio" name="type" value="custom" <?= set_radio('type', Store_command_model::TYPE_CUSTOM, Store_command_model::TYPE_CUSTOM === $command->type) ?>>
                 <div class="uk-label-container">
                   <div class="uk-label-dot"></div>
                   <label><?= lang('custom') ?></label>

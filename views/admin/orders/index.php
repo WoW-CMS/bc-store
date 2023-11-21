@@ -67,7 +67,7 @@
                   <tr>
                     <th><?= lang('id') ?></th>
                     <th class="uk-table-shrink"><?= lang('user') ?></th>
-                    <th class="uk-width-small"><?= lang('products_sold') ?></th>
+                    <th class="uk-width-small"><?= lang('purchased_products') ?></th>
                     <th class="uk-width-small"><?= lang('status') ?></th>
                     <th class="uk-width-medium uk-visible@s"><?= lang('date') ?></th>
                     <th class="uk-width-small"><?= lang('actions') ?></th>
@@ -80,8 +80,16 @@
                     <td class="uk-text-center">
                       <img class="uk-preserve-width uk-border-circle" src="<?= user_avatar($item->user_id) ?>" width="32" height="32" alt="<?= $item->username ?>" uk-tooltip="<?= $item->username ?>">
                     </td>
-                    <td><?= $item->products_sold ?></td>
-                    <td><span class="uk-label"><?= $item->status ?></span></td>
+                    <td><?= $item->total_products ?></td>
+                    <td>
+                      <?php if ($item->status === Store_order_model::STATUS_COMPLETED): ?>
+                      <span class="uk-label uk-label-success"><?= lang('completed') ?></span>
+                      <?php elseif ($item->status === Store_order_model::STATUS_PROCESSING): ?>
+                      <span class="uk-label uk-label-danger"><?= lang('processing') ?></span>
+                      <?php else: ?>
+                      <span class="uk-label"><?= $item->status ?></span>
+                      <?php endif ?>
+                    </td>
                     <td class="uk-visible@s">
                       <time datetime="<?= $item->created_at ?>"><?= locate_date($item->created_at) ?></time>
                     </td>

@@ -34,7 +34,8 @@ class Store extends BS_Controller
     public function index()
     {
         $data = [
-            'categories' => $this->store_category_model->categories()
+            'categories' => $this->store_category_model->categories(),
+            'products'   => $this->store_product_model->highlight_products()
         ];
 
         $this->template->title(lang('store'), config_item('app_name'));
@@ -91,7 +92,7 @@ class Store extends BS_Controller
     {
         $product = $this->store_product_model->find([
             'id'      => $productId,
-            'visible' => 1
+            'visible' => true
         ]);
 
         if (empty($product)) {
@@ -100,38 +101,66 @@ class Store extends BS_Controller
 
         $userId = $this->session->userdata('id');
         $data   = [
-            'categories' => $this->store_category_model->categories(),
-            'characters' => $this->server_characters_model->all_characters($product->realm_id, $userId),
             'product'    => $product,
-            'category'   => $this->store_category_model->find(['id' => $product->category_id])
+            'category'   => $this->store_category_model->find(['id' => $product->category_id]),
+            'categories' => $this->store_category_model->categories(),
+            'characters' => $this->server_characters_model->all_characters($product->realm_id, $userId)
         ];
 
         $this->template->title(lang('store'), config_item('app_name'));
+
+        if ($product->currency === Store_product_model::CURRENCY_CHOICE) {
+            $this->form_validation->set_rules('price', lang('price'), 'trim|required|in_list[dp,vp]');
+        }
 
         $this->form_validation->set_rules('guid', lang('character'), 'trim|required|is_natural_no_zero');
         $this->form_validation->set_rules('qty', lang('quantity'), 'trim|required|is_natural_no_zero');
 
         if ($this->input->method() === 'post' && $this->form_validation->run()) {
             $guid = $this->input->post('guid');
-            $qty  = $this->input->post('qty');
 
             if (! $this->server_characters_model->character_linked($product->realm_id, $guid, $userId)) {
                 $this->session->set_flashdata('error', lang('alert_character_not_related'));
                 redirect(site_url('store/product/' . $productId));
             }
 
-            $this->cart->insert([
+            $content = [
                 'id'      => $productId,
                 'name'    => $product->name,
-                'qty'     => $qty,
-                'dp'      => in_array($product->currency, [CURRENCY_DP, CURRENCY_BOTH], true) ? (int) $product->dp : 0,
-                'vp'      => in_array($product->currency, [CURRENCY_VP, CURRENCY_BOTH], true) ? (int) $product->vp : 0,
+                'qty'     => $this->input->post('qty'),
+                'dp'      => 0,
+                'vp'      => 0,
                 'options' => [
                     'guid'     => (int) $guid,
                     'realm'    => (int) $product->realm_id,
-                    'currency' => $product->currency
+                    'currency' => ''
                 ]
-            ]);
+            ];
+
+            if ($product->currency === Store_product_model::CURRENCY_DP) {
+                $content['dp'] = (int) $product->dp;
+                $content['options']['currency'] = Store_product_model::CURRENCY_DP;
+            }
+
+            if ($product->currency === Store_product_model::CURRENCY_VP) {
+                $content['vp'] = (int) $product->vp;
+                $content['options']['currency'] = Store_product_model::CURRENCY_VP;
+            }
+
+            if ($product->currency === Store_product_model::CURRENCY_BOTH) {
+                $content['dp'] = (int) $product->dp;
+                $content['vp'] = (int) $product->vp;
+                $content['options']['currency'] = Store_product_model::CURRENCY_BOTH;
+            }
+
+            if ($product->currency === Store_product_model::CURRENCY_CHOICE) {
+                $price  = $this->input->post('price');
+
+                $content[$price] = (int) $product->$price;
+                $content['options']['currency'] = $price;
+            }
+
+            $this->cart->insert($content);
 
             $this->session->set_flashdata('success', lang('alert_cart_product_added'));
             redirect(site_url('store/product/' . $productId));
@@ -193,8 +222,8 @@ class Store extends BS_Controller
 
     public function checkout()
     {
-        $totalDp    = $this->cart->total_dp();
-        $totalVp    = $this->cart->total_vp();
+        $totalDP    = $this->cart->total_dp();
+        $totalVP    = $this->cart->total_vp();
         $totalItems = $this->cart->total_items();
         $user       = user();
 
@@ -203,27 +232,27 @@ class Store extends BS_Controller
             redirect(site_url('store/cart'));
         }
 
-        if ((int) $user->dp < $totalDp) {
+        if ((int) $user->dp < $totalDP) {
             $this->session->set_flashdata('error', lang('alert_user_not_dp'));
             redirect(site_url('store/cart'));
         }
 
-        if ((int) $user->vp < $totalVp) {
+        if ((int) $user->vp < $totalVP) {
             $this->session->set_flashdata('error', lang('alert_user_not_vp'));
             redirect(site_url('store/cart'));
         }
 
         $this->user_model->set([
-            'dp' => 'dp-' . $totalDp,
-            'vp' => 'vp-' . $totalVp
+            'dp' => 'dp-' . $totalDP,
+            'vp' => 'vp-' . $totalVP
         ], ['id' => $user->id], false);
 
         $this->store_order_model->insert([
-            'user_id'       => $user->id,
-            'products_sold' => $totalItems,
-            'total_dp'      => $totalDp,
-            'total_vp'      => $totalVp,
-            'ip'            => $this->input->ip_address()
+            'user_id'        => $user->id,
+            'total_products' => $totalItems,
+            'total_dp'       => $totalDP,
+            'total_vp'       => $totalVP,
+            'ip'             => $this->input->ip_address()
         ]);
 
         $orderId = $this->db->insert_id();
@@ -338,19 +367,6 @@ class Store extends BS_Controller
      */
     public function view_order($id = null)
     {
-        $inputPage = $this->input->get('page');
-        $page      = ctype_digit((string) $inputPage) ? (int) $inputPage : 0;
-
-        $perPage = 25;
-        $offset  = $page > 1 ? ($page - 1) * $perPage : $page; // Calculate offset for paginate
-        $filters = ['order_id' => $id];
-
-        $this->pagination->initialize([
-            'base_url'   => site_url('store/orders/view/' . $id),
-            'total_rows' => $this->store_order_product_model->total_paginate($filters),
-            'per_page'   => $perPage
-        ]);
-
         $order = $this->store_order_model->find([
             'id'      => $id,
             'user_id' => $this->session->userdata('id')
@@ -360,9 +376,22 @@ class Store extends BS_Controller
             show_404();
         }
 
+        $inputPage = $this->input->get('page');
+        $page      = ctype_digit((string) $inputPage) ? (int) $inputPage : 0;
+
+        $perPage = 25;
+        $offset  = $page > 1 ? ($page - 1) * $perPage : $page; // Calculate offset for paginate
+        $filters = ['order' => $id];
+
+        $this->pagination->initialize([
+            'base_url'   => site_url('store/orders/view/' . $id),
+            'total_rows' => $this->store_order_product_model->total_paginate($filters),
+            'per_page'   => $perPage
+        ]);
+
         $data = [
-            'order' => $order,
-            'products' => $this->store_order_product_model->paginate($perPage, $offset, $filters),
+            'order'      => $order,
+            'products'   => $this->store_order_product_model->paginate($perPage, $offset, $filters),
             'pagination' => $this->pagination->create_links()
         ];
 
